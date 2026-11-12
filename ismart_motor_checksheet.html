@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบฟอร์มตรวจสอบและบำรุงรักษา Station iSmart Motor</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Prompt & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        heading: ['Prompt', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: {
+                            950: '#070B14',
+                            900: '#0D1424',
+                            800: '#131C31',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #070B14;
+            color: #F8FAFC;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Background Mesh & Glows */
+        .ambient-bg {
+            background: 
+                radial-gradient(circle at 12% 10%, rgba(220, 38, 38, 0.16) 0%, transparent 42%),
+                radial-gradient(circle at 88% 18%, rgba(29, 78, 216, 0.22) 0%, transparent 45%),
+                radial-gradient(circle at 50% 55%, rgba(15, 23, 42, 0.9) 0%, #070B14 100%);
+            background-attachment: fixed;
+        }
+
+        /* Luxury Glassmorphism Card with Metallic Sheen */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(17, 24, 39, 0.82) 0%, rgba(13, 20, 36, 0.72) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+        }
+
+        /* Gradient Accent Top Line */
+        .crimson-blue-line {
+            background: linear-gradient(90deg, #DC2626 0%, #9333EA 35%, #2563EB 70%, #F8FAFC 100%);
+        }
+
+        /* Card Interactive States */
+        .check-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(160deg, rgba(17, 24, 39, 0.85) 0%, rgba(15, 23, 42, 0.65) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+        }
+        .check-card:hover {
+            border-color: rgba(148, 163, 184, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* OK Active State: Sleek Electric Blue-Cyan & Silver Sheen */
+        .check-card.state-ok {
+            background: linear-gradient(145deg, rgba(14, 116, 144, 0.22) 0%, rgba(29, 78, 216, 0.18) 50%, rgba(15, 23, 42, 0.88) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.55);
+            box-shadow: 0 0 25px -5px rgba(2, 132, 199, 0.35), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+        }
+
+        /* NG Active State: Striking Crimson Red Glow */
+        .check-card.state-ng {
+            background: linear-gradient(145deg, rgba(185, 28, 28, 0.26) 0%, rgba(127, 29, 29, 0.2) 55%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid rgba(248, 113, 113, 0.65);
+            box-shadow: 0 0 28px -5px rgba(220, 38, 38, 0.4), inset 0 1px 0 0 rgba(254, 202, 202, 0.15);
+        }
+
+        /* Custom Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Dark Date Picker Icon Fix */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) brightness(0.9);
+            cursor: pointer;
+        }
+
+        /* Print Stylesheet: Clean Formal White Paper Output */
+        @media print {
+            body, .ambient-bg {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                font-size: 10.5pt;
+            }
+            .no-print { display: none !important; }
+            .glass-panel, .check-card, .check-card.state-ok, .check-card.state-ng {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .text-white, .text-slate-100, .text-slate-200, .text-slate-300, .text-slate-400 {
+                color: #0f172a !important;
+            }
+            .sticky-header {
+                position: static !important;
+                border-bottom: 2px solid #0f172a !important;
+            }
+            input, textarea, select {
+                background: transparent !important;
+                color: #0f172a !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+        }
+    </style>
+</head>
+<body class="ambient-bg antialiased pb-20 selection:bg-sky-500 selection:text-white">
+
+    <!-- Decorative Ambient Orbs -->
+    <div class="fixed top-[-120px] left-[-100px] w-[420px] h-[420px] rounded-full bg-red-600/15 blur-[120px] pointer-events-none no-print"></div>
+    <div class="fixed top-[10%] right-[-120px] w-[460px] h-[460px] rounded-full bg-blue-600/20 blur-[130px] pointer-events-none no-print"></div>
+    <div class="fixed bottom-[-150px] left-[30%] w-[500px] h-[350px] rounded-full bg-slate-400/10 blur-[140px] pointer-events-none no-print"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 no-print"></div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 no-print">
+        <div class="glass-panel rounded-2xl max-w-md w-full p-6 border border-red-500/30 shadow-2xl transform transition-all">
+            <div class="flex items-center gap-3.5 mb-3">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-red-600/30 to-red-900/40 border border-red-500/40 flex items-center justify-center text-red-400 text-xl">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 id="modal-title" class="text-lg font-bold text-white">ยืนยันการทำรายการ</h3>
+            </div>
+            <p id="modal-message" class="text-slate-300 text-sm mb-6 leading-relaxed">คุณต้องการดำเนินการนี้ใช่หรือไม่?</p>
+            <div class="flex justify-end gap-3">
+                <button id="modal-cancel" class="px-4 py-2.5 rounded-xl bg-slate-800/90 border border-slate-600/60 text-slate-200 text-sm font-medium hover:bg-slate-700 transition">ยกเลิก</button>
+                <button id="modal-confirm" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 text-white text-sm font-semibold hover:from-red-500 hover:to-rose-600 shadow-lg shadow-red-600/30 transition">ยืนยันล้างข้อมูล</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Luxury Header Banner -->
+    <header class="relative pt-6 pb-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto">
+            <div class="glass-panel rounded-3xl overflow-hidden">
+                <!-- Crimson-Blue-White Metallic Accent Bar -->
+                <div class="h-1.5 w-full crimson-blue-line"></div>
+                
+                <div class="p-5 sm:p-7">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                        <div class="space-y-2">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-red-600/20 via-blue-600/20 to-slate-700/30 border border-slate-400/25 text-xs font-semibold tracking-wider text-slate-200 uppercase">
+                                <span class="w-2 h-2 rounded-full bg-gradient-to-r from-red-500 to-sky-400 animate-pulse"></span>
+                                iSMART MOTOR STATION • TOR INSPECTION
+                            </div>
+                            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                                แบบฟอร์มตรวจสอบและบำรุงรักษา Station iSmart Motor
+                            </h1>
+                            <p class="text-slate-300/90 text-sm sm:text-base max-w-3xl leading-relaxed font-light">
+                                ใช้บันทึกผลตรวจอุปกรณ์ตรวจวัด เซนเซอร์ ระบบสื่อสาร การประมวลผลสุขภาพมอเตอร์ และ Dashboard ตามขอบเขต TOR
+                            </p>
+                        </div>
+
+                        <!-- Export & Print Action Buttons -->
+                        <div class="flex flex-wrap items-center gap-2.5 no-print shrink-0">
+                            <button onclick="exportToCSV()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-medium text-sm shadow-lg shadow-blue-600/25 border border-sky-400/30 transition active:scale-95">
+                                <i class="fa-solid fa-file-csv text-base"></i> ส่งออก CSV
+                            </button>
+                            <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm border border-white/20 backdrop-blur-md transition active:scale-95">
+                                <i class="fa-solid fa-print text-base text-slate-200"></i> พิมพ์ / PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metadata Input Grid -->
+                    <div class="mt-6 pt-6 border-t border-slate-700/60 grid grid-cols-1 md:grid-cols-12 gap-4">
+                        <!-- Date -->
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-medium text-slate-300 mb-1.5">
+                                <i class="fa-regular fa-calendar text-sky-400 mr-1.5"></i>วันที่ตรวจสอบ
+                            </label>
+                            <input type="date" id="meta-date" onchange="saveMetadata()" 
+                                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white text-sm font-mono focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400/40 transition">
+                        </div>
+
+                        <!-- Inspector -->
+                        <div class="md:col-span-4">
+                            <label class="block text-xs font-medium text-slate-300 mb-1.5">
+                                <i class="fa-regular fa-user text-red-400 mr-1.5"></i>ผู้ตรวจสอบ
+                            </label>
+                            <input type="text" id="meta-inspector" oninput="saveMetadata()" placeholder="ระบุชื่อ-นามสกุล ผู้ตรวจสอบ"
+                                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400/40 transition">
+                        </div>
+
+                        <!-- Inspection Cycle Segmented Pill Buttons -->
+                        <div class="md:col-span-5">
+                            <label class="block text-xs font-medium text-slate-300 mb-1.5">
+                                <i class="fa-solid fa-rotate text-slate-300 mr-1.5"></i>รอบการตรวจ
+                            </label>
+                            <div class="grid grid-cols-4 gap-1.5 p-1 rounded-xl bg-slate-900/90 border border-slate-700/80" id="cycle-pill-group">
+                                <button type="button" onclick="selectCycle('ประจำวัน')" data-cycle="ประจำวัน" class="cycle-pill py-1.5 px-2 rounded-lg text-xs font-medium transition">ประจำวัน</button>
+                                <button type="button" onclick="selectCycle('ประจำสัปดาห์')" data-cycle="ประจำสัปดาห์" class="cycle-pill py-1.5 px-2 rounded-lg text-xs font-medium transition">ประจำสัปดาห์</button>
+                                <button type="button" onclick="selectCycle('ประจำเดือน')" data-cycle="ประจำเดือน" class="cycle-pill py-1.5 px-2 rounded-lg text-xs font-medium transition">ประจำเดือน</button>
+                                <button type="button" onclick="selectCycle('อื่น ๆ')" data-cycle="อื่น ๆ" class="cycle-pill py-1.5 px-2 rounded-lg text-xs font-medium transition">อื่น ๆ</button>
+                            </div>
+                        </div>
+
+                        <!-- Custom Cycle Input (Visible when อื่น ๆ selected) -->
+                        <div id="other-cycle-container" class="md:col-span-12 hidden">
+                            <div class="flex items-center gap-3 bg-slate-900/70 border border-slate-700/70 rounded-xl px-4 py-2.5">
+                                <span class="text-xs font-medium text-sky-400 shrink-0"><i class="fa-solid fa-pen-nib mr-1"></i> ระบุรอบการตรวจเพิ่มเติม:</span>
+                                <input type="text" id="meta-cycle-other" oninput="saveMetadata()" placeholder="เช่น หลังซ่อมบำรุง, รายไตรมาส, ทดสอบระบบ..."
+                                    class="w-full bg-transparent text-white placeholder-slate-500 text-sm focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sticky Top Command & Progress Bar -->
+    <div class="sticky top-0 z-30 bg-[#070B14]/85 backdrop-blur-xl border-y border-slate-800/90 shadow-2xl sticky-header">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+            <!-- Top Row: Luxury Progress Bar + 4 Live Counters -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+                <!-- Progress Bar -->
+                <div class="flex-1">
+                    <div class="flex justify-between items-center text-xs sm:text-sm mb-1.5">
+                        <span class="font-medium text-slate-200 flex items-center gap-2">
+                            <i class="fa-solid fa-gauge-high text-sky-400"></i> ความคืบหน้าการตรวจสอบ
+                        </span>
+                        <span id="progress-text" class="font-mono font-bold text-white tracking-tight">0 / 32 รายการ (0%)</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-800/90 rounded-full overflow-hidden p-0.5 border border-slate-700/70">
+                        <div id="progress-bar" class="h-full rounded-full bg-gradient-to-r from-red-500 via-blue-500 to-white transition-all duration-500 shadow-[0_0_12px_rgba(56,189,248,0.6)]" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Live Status Counters -->
+                <div class="grid grid-cols-4 gap-2 shrink-0">
+                    <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-center">
+                        <div class="text-[10px] sm:text-[11px] text-slate-400">ตรวจแล้ว</div>
+                        <div id="stat-checked" class="text-sm sm:text-base font-mono font-bold text-white">0</div>
+                    </div>
+                    <div class="px-3 py-1.5 rounded-xl bg-gradient-to-b from-sky-950/80 to-blue-950/60 border border-sky-500/40 text-center shadow-[0_0_15px_-4px_rgba(2,132,199,0.4)]">
+                        <div class="text-[10px] sm:text-[11px] text-sky-300">ปกติ (OK)</div>
+                        <div id="stat-ok" class="text-sm sm:text-base font-mono font-bold text-sky-300">0</div>
+                    </div>
+                    <div class="px-3 py-1.5 rounded-xl bg-gradient-to-b from-red-950/80 to-rose-950/60 border border-red-500/40 text-center shadow-[0_0_15px_-4px_rgba(220,38,38,0.4)]">
+                        <div class="text-[10px] sm:text-[11px] text-red-300">ไม่ปกติ (NG)</div>
+                        <div id="stat-ng" class="text-sm sm:text-base font-mono font-bold text-red-400">0</div>
+                    </div>
+                    <div class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-center">
+                        <div class="text-[10px] sm:text-[11px] text-slate-400">รอตรวจ</div>
+                        <div id="stat-pending" class="text-sm sm:text-base font-mono font-bold text-slate-300">32</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Row: Filter Tabs + Search Box + Reset -->
+            <div class="mt-3 pt-3 border-t border-slate-800/80 flex flex-col md:flex-row md:items-center justify-between gap-2.5 no-print">
+                <!-- Status Filter Pills -->
+                <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 md:pb-0">
+                    <button onclick="setStatusFilter('ALL')" data-filter="ALL" class="status-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shrink-0">
+                        ทั้งหมด (32)
+                    </button>
+                    <button onclick="setStatusFilter('PENDING')" data-filter="PENDING" class="status-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition shrink-0">
+                        รอตรวจ
+                    </button>
+                    <button onclick="setStatusFilter('OK')" data-filter="OK" class="status-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition shrink-0">
+                        ปกติ (OK)
+                    </button>
+                    <button onclick="setStatusFilter('NG')" data-filter="NG" class="status-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-medium transition shrink-0">
+                        ไม่ปกติ (NG)
+                    </button>
+                </div>
+
+                <!-- Search + Category + Reset -->
+                <div class="flex flex-wrap sm:flex-nowrap items-center gap-2">
+                    <!-- Quick Search Input -->
+                    <div class="relative flex-1 sm:w-52">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="ค้นหาอุปกรณ์ / รายการ..."
+                            class="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700/80 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 transition">
+                    </div>
+
+                    <!-- Category Dropdown -->
+                    <select id="category-filter" onchange="setCategoryFilter(this.value)" class="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700/80 text-xs text-slate-200 focus:outline-none focus:border-sky-400 max-w-[180px]">
+                        <option value="ALL">ทุกหมวดหมู่ (1-7)</option>
+                        <option value="1">หมวด 1: สภาพทั่วไปฯ</option>
+                        <option value="2">หมวด 2: ระบบเซนเซอร์ฯ</option>
+                        <option value="3">หมวด 3: ระบบไฟฟ้าฯ</option>
+                        <option value="4">หมวด 4: โปรแกรมฯ</option>
+                        <option value="5">หมวด 5: Dashboardฯ</option>
+                        <option value="6">หมวด 6: การจัดเก็บฯ</option>
+                        <option value="7">หมวด 7: การทดสอบหลังตรวจฯ</option>
+                    </select>
+
+                    <!-- Reset Button -->
+                    <button onclick="confirmResetForm()" title="รีเซ็ตฟอร์ม" class="px-3 py-1.5 rounded-xl bg-red-950/50 hover:bg-red-900/70 border border-red-500/30 text-red-300 text-xs font-medium transition shrink-0">
+                        <i class="fa-solid fa-rotate-left mr-1"></i>รีเซ็ตฟอร์ม
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Checksheet Cards Container -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-7">
+        <!-- Empty Filter State -->
+        <div id="empty-filter-state" class="hidden glass-panel rounded-3xl p-12 text-center my-6">
+            <div class="w-16 h-16 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-400 flex items-center justify-center text-2xl mx-auto mb-4">
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white">ไม่พบรายการที่ตรงกับเงื่อนไข</h3>
+            <p class="text-sm text-slate-400 mt-1">ลองล้างคำค้นหาหรือเปลี่ยนตัวกรองสถานะเพื่อแสดงรายการทั้งหมด</p>
+            <button onclick="resetFilters()" class="mt-5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white text-sm font-semibold hover:from-blue-500 hover:to-sky-500 shadow-lg transition">
+                แสดงรายการทั้งหมด (32)
+            </button>
+        </div>
+
+        <!-- Categories & Cards Dynamic Container -->
+        <div id="checklist-container" class="space-y-9"></div>
+
+        <!-- Bottom Summary & Digital Sign-off Luxury Card -->
+        <section class="mt-12 glass-panel rounded-3xl overflow-hidden">
+            <div class="h-1.5 w-full crimson-blue-line"></div>
+            
+            <div class="p-6 sm:p-8 space-y-7">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-700/60 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600/30 to-blue-600/30 border border-white/15 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-clipboard-check text-lg"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-white">สรุปผลการตรวจสอบและลงนามรับรอง</h2>
+                            <p class="text-xs text-slate-400">ข้อมูลถูกบันทึกอัตโนมัติลงในเบราว์เซอร์ (Auto-Save)</p>
+                        </div>
+                    </div>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-mono text-sky-300 bg-sky-950/60 border border-sky-500/30 px-3 py-1 rounded-full self-start sm:self-center">
+                        <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-ping"></span> LIVE SUMMARY
+                    </span>
+                </div>
+
+                <!-- Summary Metrics Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/70 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-slate-400">จำนวนรายการที่ตรวจสอบ</div>
+                            <div class="text-2xl font-mono font-bold text-white mt-1"><span id="footer-checked">0</span> <span class="text-xs font-sans font-normal text-slate-400">/ 32 รายการ</span></div>
+                        </div>
+                        <div class="w-11 h-11 rounded-xl bg-slate-800 text-slate-300 flex items-center justify-center text-lg border border-slate-700">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-gradient-to-br from-sky-950/70 to-blue-950/50 border border-sky-500/35 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-sky-300">จำนวนรายการปกติ (OK)</div>
+                            <div class="text-2xl font-mono font-bold text-white mt-1"><span id="footer-ok">0</span> <span class="text-xs font-sans font-normal text-sky-300">รายการ</span></div>
+                        </div>
+                        <div class="w-11 h-11 rounded-xl bg-sky-500/20 text-sky-300 flex items-center justify-center text-lg border border-sky-400/30">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-gradient-to-br from-red-950/70 to-rose-950/50 border border-red-500/35 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-red-300">จำนวนรายการไม่ปกติ (NG)</div>
+                            <div class="text-2xl font-mono font-bold text-white mt-1"><span id="footer-ng">0</span> <span class="text-xs font-sans font-normal text-red-300">รายการ</span></div>
+                        </div>
+                        <div class="w-11 h-11 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center text-lg border border-red-400/30">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auto-populated Follow-up NG List -->
+                <div>
+                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
+                        รายการที่ต้องติดตาม / ดำเนินการต่อ (รายการที่พบความผิดปกติ NG)
+                    </h3>
+                    <div id="ng-summary-list" class="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4">
+                        <p class="text-sm text-slate-400 text-center py-3">ไม่มีรายการผิดปกติ (NG) ที่ต้องดำเนินการแก้ไข</p>
+                    </div>
+                </div>
+
+                <!-- General Notes -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+                        ข้อเสนอแนะ / บันทึกเพิ่มเติมภาพรวม
+                    </label>
+                    <textarea id="meta-general-note" oninput="saveMetadata()" rows="2" placeholder="ระบุข้อสังเกตหรือบันทึกเพิ่มเติมหลังการตรวจสอบ..."
+                        class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400 transition"></textarea>
+                </div>
+
+                <!-- Digital Sign-off Inputs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4 border-t border-slate-700/60">
+                    <div class="p-4 rounded-2xl bg-slate-900/75 border border-slate-700/70">
+                        <label class="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-2">
+                            <i class="fa-solid fa-signature mr-1"></i> ลงชื่อผู้ตรวจสอบ (Inspector Signature)
+                        </label>
+                        <input type="text" id="sign-inspector" oninput="saveMetadata()" placeholder="พิมพ์ชื่อ-นามสกุล ผู้ตรวจสอบ..."
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700 text-sm font-medium text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                        <div class="mt-2.5 text-xs text-slate-400 flex justify-between font-mono">
+                            <span>ROLE: INSPECTOR</span>
+                            <span id="sign-inspector-date">DATE: -</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-900/75 border border-slate-700/70">
+                        <label class="block text-xs font-semibold text-red-300 uppercase tracking-wider mb-2">
+                            <i class="fa-solid fa-user-check mr-1"></i> ลงชื่อผู้รับทราบ (Acknowledge Signature)
+                        </label>
+                        <input type="text" id="sign-approver" oninput="saveMetadata()" placeholder="พิมพ์ชื่อ-นามสกุล ผู้รับทราบ / หัวหน้างาน..."
+                            class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/90 border border-slate-700 text-sm font-medium text-white placeholder-slate-500 focus:outline-none focus:border-red-400">
+                        <div class="mt-2.5 text-xs text-slate-400 flex justify-between font-mono">
+                            <span>ROLE: APPROVER</span>
+                            <span id="sign-approver-date">DATE: -</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // ==========================================
+        // 1. MASTER DATA: All 7 Categories, 32 Items
+        // ==========================================
+        const CHECKLIST_DATA = [
+            {
+                id: 1,
+                title: "1. สภาพทั่วไปและชุดอุปกรณ์ประจำสถานี",
+                icon: "fa-desktop",
+                items: [
+                    { id: 1, equipment: "โต๊ะ/ขาตั้งอุปกรณ์", checkItem: "ตรวจสอบความมั่นคง แข็งแรง และไม่มีการโยกคลอน", method: "ตรวจสอบด้วยสายตาและทดลองตรวจความมั่นคงโดยไม่กระทบอุปกรณ์" },
+                    { id: 2, equipment: "ชุดอุปกรณ์ iSmart Motor / กล่องอุปกรณ์", checkItem: "ตรวจสอบสภาพตัวกล่อง ฝาปิด ตัวล็อก และอุปกรณ์ภายในที่มองเห็นได้", method: "ตรวจสอบสภาพภายนอกและความเรียบร้อย" },
+                    { id: 3, equipment: "ชุดทดสอบมอเตอร์/ชุดติดตั้งมอเตอร์", checkItem: "ตรวจสอบสภาพชุดทดสอบ จุดยึด และความพร้อมก่อนทดสอบ", method: "ตรวจสอบตามขั้นตอนการใช้งานของสถานี" },
+                    { id: 4, equipment: "จอแสดงผลหลัก (Monitor)", checkItem: "ตรวจสอบการเปิดใช้งาน ภาพแสดงผล และสายเชื่อมต่อ", method: "เปิดจอและตรวจสอบภาพ/สัญญาณเข้า" },
+                    { id: 5, equipment: "คอมพิวเตอร์หรืออุปกรณ์ประมวลผล", checkItem: "ตรวจสอบการเปิดใช้งานและความพร้อมของอุปกรณ์", method: "เปิดใช้งานและตรวจสอบการทำงานเบื้องต้น" },
+                    { id: 6, equipment: "อุปกรณ์ประกอบและพื้นที่ติดตั้ง", checkItem: "ตรวจสอบความเรียบร้อย การจัดวาง และไม่มีสิ่งกีดขวาง", method: "ตรวจสอบด้วยสายตา" }
+                ]
+            },
+            {
+                id: 2,
+                title: "2. ระบบเซนเซอร์และอุปกรณ์ตรวจวัด",
+                icon: "fa-wave-square",
+                items: [
+                    { id: 7, equipment: "Sensor ตรวจวัดมอเตอร์", checkItem: "ตรวจสอบสภาพภายนอก ความเสียหาย และความพร้อมใช้งาน", method: "ตรวจสอบสภาพตามคู่มืออุปกรณ์" },
+                    { id: 8, equipment: "ตำแหน่งติดตั้ง Sensor", checkItem: "ตรวจสอบตำแหน่งและความแน่นของจุดติดตั้งให้ตรงตามวิธีการวัด", method: "ตรวจสอบเทียบกับตำแหน่งอ้างอิง/ขั้นตอนของสถานี" },
+                    { id: 9, equipment: "จุดยึดหรืออุปกรณ์จับยึด Sensor", checkItem: "ตรวจสอบการยึดติด ไม่หลวม และไม่เคลื่อนจากตำแหน่ง", method: "ตรวจสอบด้วยสายตาและตามวิธีที่ผู้ดูแลอนุญาต" },
+                    { id: 10, equipment: "อุปกรณ์รับสัญญาณ/เครื่องมือวัด", checkItem: "ตรวจสอบสภาพภายนอก ขั้วต่อ และไฟแสดงสถานะ (ถ้ามี)", method: "ตรวจสอบสภาพและทดสอบการทำงานตามคู่มือ" },
+                    { id: 11, equipment: "สาย Sensor / สายสัญญาณ", checkItem: "ตรวจสอบรอยชำรุด การหักงอ และจุดต่อหลวม", method: "ตรวจสอบด้วยสายตาตลอดแนวสาย" }
+                ]
+            },
+            {
+                id: 3,
+                title: "3. ระบบไฟฟ้าและการเชื่อมต่อ",
+                icon: "fa-plug-circle-bolt",
+                items: [
+                    { id: 12, equipment: "แหล่งจ่ายไฟ/อะแดปเตอร์", checkItem: "ตรวจสอบสภาพ สายไฟ และความพร้อมในการจ่ายไฟ", method: "ตรวจสอบสภาพภายนอกและไฟแสดงสถานะ" },
+                    { id: 13, equipment: "สายไฟและปลั๊ก", checkItem: "ตรวจสอบฉนวน รอยแตก ขั้วหลวม หรือร่องรอยความร้อน", method: "ตรวจสอบด้วยสายตา โดยไม่สัมผัสส่วนที่มีไฟ" },
+                    { id: 14, equipment: "สายเชื่อมต่อระหว่างอุปกรณ์", checkItem: "ตรวจสอบสายและหัวต่อระหว่าง Sensor เครื่องมือวัด และคอมพิวเตอร์", method: "ตรวจสอบการเสียบต่อและสภาพสาย" },
+                    { id: 15, equipment: "จุดต่อ/พอร์ตสื่อสาร", checkItem: "ตรวจสอบพอร์ตและขั้วต่อว่าไม่เสียหายหรือหลวม", method: "ตรวจสอบด้วยสายตาและทดสอบการเชื่อมต่อ" }
+                ]
+            },
+            {
+                id: 4,
+                title: "4. โปรแกรม การรับข้อมูล และการประมวลผล",
+                icon: "fa-microchip",
+                items: [
+                    { id: 16, equipment: "โปรแกรม iSmart Motor", checkItem: "ตรวจสอบการเปิดใช้งานและการทำงานของฟังก์ชันหลัก", method: "เปิดโปรแกรมและทดสอบตามขั้นตอนการใช้งาน" },
+                    { id: 17, equipment: "การรับข้อมูลจาก Sensor/เครื่องมือวัด", checkItem: "ตรวจสอบว่าระบบรับข้อมูลได้ครบถ้วนตามรอบการวัด", method: "ทดสอบวัดและตรวจสอบข้อมูลที่รับเข้าระบบ" },
+                    { id: 18, equipment: "ค่าข้อมูลการวัด", checkItem: "ตรวจสอบข้อมูลไม่ว่างหายหรือมีค่าผิดปกติอย่างชัดเจน", method: "ตรวจสอบค่าที่แสดงและเปรียบเทียบกับสภาวะการทดสอบ" },
+                    { id: 19, equipment: "การประมวลผลสัญญาณ", checkItem: "ตรวจสอบว่าระบบประมวลผลข้อมูลจากการวัดได้", method: "ทดสอบประมวลผลด้วยข้อมูลจากการวัด" },
+                    { id: 20, equipment: "ข้อมูลการสั่นสะเทือน/FFT (หากระบบรองรับ)", checkItem: "ตรวจสอบการรับและประมวลผลข้อมูลสัญญาณและความถี่", method: "ตรวจสอบกราฟหรือผลลัพธ์ที่โปรแกรมแสดง" },
+                    { id: 21, equipment: "ผลการประเมินสุขภาพมอเตอร์", checkItem: "ตรวจสอบการแสดงผลสถานะหรือผลวิเคราะห์สุขภาพมอเตอร์", method: "เปรียบเทียบผลลัพธ์กับข้อมูลที่ระบบประมวลผล" },
+                    { id: 22, equipment: "การจัดเก็บและเรียกดูข้อมูล", checkItem: "ตรวจสอบการบันทึกข้อมูลและการเรียกดูข้อมูลย้อนหลัง", method: "ทดสอบบันทึกและเปิดดูข้อมูลตัวอย่าง" }
+                ]
+            },
+            {
+                id: 5,
+                title: "5. Dashboard และอุปกรณ์แสดงผล",
+                icon: "fa-chart-line",
+                items: [
+                    { id: 23, equipment: "Dashboard iSmart Motor", checkItem: "ตรวจสอบการเข้าใช้งานและการแสดงผลข้อมูล", method: "เปิด Dashboard และตรวจสอบหน้าจอ" },
+                    { id: 24, equipment: "ค่าการวัดและผลวิเคราะห์", checkItem: "ตรวจสอบค่าที่แสดงตรงกับข้อมูลที่รับและประมวลผล", method: "เปรียบเทียบข้อมูลต้นทางกับค่าบน Dashboard" },
+                    { id: 25, equipment: "กราฟ/แนวโน้มข้อมูล", checkItem: "ตรวจสอบกราฟสัญญาณและข้อมูลแนวโน้มที่ระบบรองรับ", method: "ตรวจสอบว่ากราฟแสดงข้อมูลตามช่วงเวลาที่เลือก" },
+                    { id: 26, equipment: "การอัปเดตข้อมูล", checkItem: "ตรวจสอบข้อมูลปรับปรุงต่อเนื่อง ไม่ค้างหรือขาดช่วงผิดปกติ", method: "สังเกตการเปลี่ยนแปลงระหว่างการทดสอบ" },
+                    { id: 27, equipment: "จอภาพและการเชื่อมต่อจอ", checkItem: "ตรวจสอบภาพ ความคมชัด และสัญญาณภาพ", method: "ตรวจสอบการแสดงผลจากคอมพิวเตอร์/อุปกรณ์ประมวลผล" }
+                ]
+            },
+            {
+                id: 6,
+                title: "6. การจัดเก็บและความพร้อมใช้งานของอุปกรณ์",
+                icon: "fa-box-archive",
+                items: [
+                    { id: 28, equipment: "กล่อง/กระเป๋าจัดเก็บอุปกรณ์", checkItem: "ตรวจสอบสภาพกล่อง ฝาปิด ตัวล็อก และวัสดุป้องกันอุปกรณ์", method: "ตรวจสอบด้วยสายตา" },
+                    { id: 29, equipment: "การจัดเก็บ Sensor และสายสัญญาณ", checkItem: "ตรวจสอบการจัดเก็บเป็นระเบียบ ไม่พันหรือกดทับสาย", method: "ตรวจสอบหลังเสร็จสิ้นการใช้งาน" },
+                    { id: 30, equipment: "อุปกรณ์และเอกสารประกอบ", checkItem: "ตรวจสอบความครบถ้วนของอุปกรณ์และคู่มือที่ใช้ประจำสถานี", method: "เทียบกับรายการอุปกรณ์/เอกสารประจำสถานี หากมี" }
+                ]
+            },
+            {
+                id: 7,
+                title: "7. การทดสอบหลังตรวจสอบและบำรุงรักษา",
+                icon: "fa-vial-circle-check",
+                items: [
+                    { id: 31, equipment: "การทดสอบระบบตั้งแต่ Sensor ถึง Dashboard", checkItem: "ทดสอบการวัด รับข้อมูล ประมวลผล และแสดงผลหลังตรวจสอบ/แก้ไข", method: "ดำเนินการทดสอบตามลำดับการทำงานของสถานี" },
+                    { id: 32, equipment: "การบันทึกผลการดำเนินงาน", checkItem: "บันทึกปัญหา สาเหตุ การแก้ไข และผลการทดสอบหลังดำเนินการ", method: "ตรวจสอบความครบถ้วนของบันทึกและหลักฐาน" }
+                ]
+            }
+        ];
+
+        // ==========================================
+        // 2. STATE & PERSISTENCE (localStorage)
+        // ==========================================
+        const STORAGE_KEY = 'ismart_motor_checksheet_luxury_v2';
+
+        let appState = {
+            metadata: {
+                date: new Date().toISOString().split('T')[0],
+                inspector: '',
+                cycle: 'ประจำวัน',
+                cycleOther: '',
+                generalNote: '',
+                signInspector: '',
+                signApprover: ''
+            },
+            results: {},
+            filters: {
+                status: 'ALL',
+                category: 'ALL',
+                search: ''
+            }
+        };
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    appState.metadata = { ...appState.metadata, ...(parsed.metadata || {}) };
+                    appState.results = parsed.results || {};
+                }
+            } catch (e) {
+                console.error("Failed to load state", e);
+            }
+        }
+
+        function persistState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    metadata: appState.metadata,
+                    results: appState.results
+                }));
+            } catch (e) {
+                console.error("Failed to persist state", e);
+            }
+        }
+
+        // ==========================================
+        // 3. INITIALIZATION & METADATA CONTROLS
+        // ==========================================
+        function initApp() {
+            loadState();
+            syncMetadataInputs();
+            setStatusFilter('ALL');
+            updateSummary();
+        }
+
+        function syncMetadataInputs() {
+            document.getElementById('meta-date').value = appState.metadata.date || new Date().toISOString().split('T')[0];
+            document.getElementById('meta-inspector').value = appState.metadata.inspector || '';
+            document.getElementById('meta-cycle-other').value = appState.metadata.cycleOther || '';
+            document.getElementById('meta-general-note').value = appState.metadata.generalNote || '';
+            document.getElementById('sign-inspector').value = appState.metadata.signInspector || '';
+            document.getElementById('sign-approver').value = appState.metadata.signApprover || '';
+
+            updateCyclePills(appState.metadata.cycle || 'ประจำวัน');
+            updateSignatureDates();
+        }
+
+        function selectCycle(cycleValue) {
+            appState.metadata.cycle = cycleValue;
+            updateCyclePills(cycleValue);
+            persistState();
+        }
+
+        function updateCyclePills(activeCycle) {
+            document.querySelectorAll('.cycle-pill').forEach(btn => {
+                const val = btn.getAttribute('data-cycle');
+                if (val === activeCycle) {
+                    btn.className = 'cycle-pill py-1.5 px-2 rounded-lg text-xs font-semibold bg-gradient-to-r from-red-600 to-blue-600 text-white shadow-md transition';
+                } else {
+                    btn.className = 'cycle-pill py-1.5 px-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition';
+                }
+            });
+
+            const otherBox = document.getElementById('other-cycle-container');
+            if (activeCycle === 'อื่น ๆ') {
+                otherBox.classList.remove('hidden');
+            } else {
+                otherBox.classList.add('hidden');
+            }
+        }
+
+        function saveMetadata() {
+            appState.metadata.date = document.getElementById('meta-date').value;
+            appState.metadata.inspector = document.getElementById('meta-inspector').value;
+            appState.metadata.cycleOther = document.getElementById('meta-cycle-other').value;
+            appState.metadata.generalNote = document.getElementById('meta-general-note').value;
+            appState.metadata.signInspector = document.getElementById('sign-inspector').value;
+            appState.metadata.signApprover = document.getElementById('sign-approver').value;
+
+            if (document.activeElement && document.activeElement.id === 'meta-inspector') {
+                appState.metadata.signInspector = appState.metadata.inspector;
+                document.getElementById('sign-inspector').value = appState.metadata.inspector;
+            }
+
+            updateSignatureDates();
+            persistState();
+        }
+
+        function updateSignatureDates() {
+            const dateStr = appState.metadata.date ? formatThaiDate(appState.metadata.date) : '-';
+            document.getElementById('sign-inspector-date').textContent = `DATE: ${dateStr}`;
+            document.getElementById('sign-approver-date').textContent = `DATE: ${dateStr}`;
+        }
+
+        // ==========================================
+        // 4. CARD INTERACTIONS (OK / NG / NOTES)
+        // ==========================================
+        function toggleStatus(itemId, targetStatus) {
+            if (!appState.results[itemId]) {
+                appState.results[itemId] = { status: null, issue: '', action: '', note: '', showNoteInput: false };
+            }
+
+            const current = appState.results[itemId].status;
+            appState.results[itemId].status = (current === targetStatus) ? null : targetStatus;
+
+            persistState();
+            renderChecklist();
+            updateSummary();
+        }
+
+        function toggleOkNote(itemId) {
+            if (!appState.results[itemId]) {
+                appState.results[itemId] = { status: 'OK', issue: '', action: '', note: '', showNoteInput: true };
+            } else {
+                appState.results[itemId].showNoteInput = !appState.results[itemId].showNoteInput;
+            }
+            persistState();
+            renderChecklist();
+        }
+
+        function updateItemField(itemId, field, value) {
+            if (!appState.results[itemId]) {
+                appState.results[itemId] = { status: null, issue: '', action: '', note: '', showNoteInput: false };
+            }
+            appState.results[itemId][field] = value;
+            persistState();
+            if (field === 'issue' || field === 'action') {
+                updateNgSummaryList();
+            }
+        }
+
+        function markCategoryAllOk(catId) {
+            const category = CHECKLIST_DATA.find(c => c.id === catId);
+            if (!category) return;
+
+            category.items.forEach(item => {
+                if (!appState.results[item.id]) {
+                    appState.results[item.id] = { status: 'OK', issue: '', action: '', note: '', showNoteInput: false };
+                } else {
+                    appState.results[item.id].status = 'OK';
+                }
+            });
+
+            persistState();
+            renderChecklist();
+            updateSummary();
+            showToast(`ติ๊ก OK ทั้งหมดใน "${category.title}" เรียบร้อยแล้ว`, 'blue');
+        }
+
+        // ==========================================
+        // 5. FILTERING & RENDERING CARDS
+        // ==========================================
+        function setStatusFilter(status) {
+            appState.filters.status = status;
+            document.querySelectorAll('.status-filter-btn').forEach(btn => {
+                const f = btn.getAttribute('data-filter');
+                if (f === status) {
+                    if (f === 'OK') {
+                        btn.className = 'status-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-md shadow-sky-600/30 transition shrink-0';
+                    } else if (f === 'NG') {
+                        btn.className = 'status-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-600/30 transition shrink-0';
+                    } else {
+                        btn.className = 'status-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white text-slate-950 shadow-md transition shrink-0';
+                    }
+                } else {
+                    btn.className = 'status-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-900/90 text-slate-300 border border-slate-700/70 hover:border-slate-500 hover:text-white transition shrink-0';
+                }
+            });
+            renderChecklist();
+        }
+
+        function setCategoryFilter(catId) {
+            appState.filters.category = catId;
+            renderChecklist();
+        }
+
+        function handleSearch(query) {
+            appState.filters.search = query.trim().toLowerCase();
+            renderChecklist();
+        }
+
+        function resetFilters() {
+            appState.filters.status = 'ALL';
+            appState.filters.category = 'ALL';
+            appState.filters.search = '';
+            document.getElementById('category-filter').value = 'ALL';
+            document.getElementById('search-input').value = '';
+            setStatusFilter('ALL');
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            const emptyState = document.getElementById('empty-filter-state');
+            container.innerHTML = '';
+
+            let totalVisibleItems = 0;
+
+            CHECKLIST_DATA.forEach(category => {
+                if (appState.filters.category !== 'ALL' && String(category.id) !== String(appState.filters.category)) {
+                    return;
+                }
+
+                const visibleItems = category.items.filter(item => {
+                    const res = appState.results[item.id];
+                    const status = res ? res.status : null;
+
+                    // Status filter
+                    if (appState.filters.status === 'PENDING' && status) return false;
+                    if (appState.filters.status === 'OK' && status !== 'OK') return false;
+                    if (appState.filters.status === 'NG' && status !== 'NG') return false;
+
+                    // Search query filter
+                    if (appState.filters.search) {
+                        const q = appState.filters.search;
+                        const matchId = String(item.id).padStart(2, '0').includes(q) || String(item.id) === q;
+                        const matchEquip = item.equipment.toLowerCase().includes(q);
+                        const matchCheck = item.checkItem.toLowerCase().includes(q);
+                        const matchMethod = item.method.toLowerCase().includes(q);
+                        if (!matchId && !matchEquip && !matchCheck && !matchMethod) return false;
+                    }
+
+                    return true;
+                });
+
+                if (visibleItems.length === 0) return;
+                totalVisibleItems += visibleItems.length;
+
+                const catCheckedCount = category.items.filter(i => appState.results[i.id]?.status).length;
+                const isAllCatOk = category.items.every(i => appState.results[i.id]?.status === 'OK');
+
+                const section = document.createElement('section');
+                section.className = 'space-y-4';
+
+                // Luxury Category Header with Crimson-Blue Gradient Accent
+                section.innerHTML = `
+                    <div class="glass-panel rounded-2xl overflow-hidden">
+                        <div class="h-1 w-full bg-gradient-to-r from-red-600 via-blue-600 to-slate-200"></div>
+                        <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600/25 via-blue-600/25 to-slate-800 border border-white/15 text-sky-300 flex items-center justify-center shrink-0 shadow-inner">
+                                    <i class="fa-solid ${category.icon} text-base"></i>
+                                </div>
+                                <div>
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <span class="text-[11px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-white/10 text-slate-300 border border-white/10">CATEGORY 0${category.id}</span>
+                                        <span class="text-xs font-mono text-sky-300 font-semibold">${catCheckedCount}/${category.items.length} COMPLETED</span>
+                                    </div>
+                                    <h2 class="text-base sm:text-lg font-bold text-white mt-0.5">${category.title}</h2>
+                                </div>
+                            </div>
+
+                            <button type="button" onclick="markCategoryAllOk(${category.id})"
+                                class="no-print self-start sm:self-center inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition active:scale-95 border
+                                ${isAllCatOk 
+                                    ? 'bg-gradient-to-r from-sky-600 to-blue-600 text-white border-sky-400/50 shadow-lg shadow-sky-600/25' 
+                                    : 'bg-white/5 hover:bg-gradient-to-r hover:from-sky-600/80 hover:to-blue-600/80 text-slate-200 hover:text-white border-slate-600/60'}">
+                                <i class="fa-solid fa-check-double"></i>
+                                <span>${isAllCatOk ? 'OK ครบทั้งหมวดแล้ว' : 'ติ๊ก OK ทั้งหมวด'}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                const cardsGrid = document.createElement('div');
+                cardsGrid.className = 'grid grid-cols-1 gap-3.5';
+
+                visibleItems.forEach(item => {
+                    const res = appState.results[item.id] || { status: null, issue: '', action: '', note: '', showNoteInput: false };
+                    const isOK = res.status === 'OK';
+                    const isNG = res.status === 'NG';
+                    const formattedNum = String(item.id).padStart(2, '0');
+
+                    let stateClass = '';
+                    let numBadgeClass = 'bg-slate-800/90 text-slate-200 border-slate-600/70';
+                    let statusBadgeHtml = '';
+
+                    if (isOK) {
+                        stateClass = 'state-ok';
+                        numBadgeClass = 'bg-gradient-to-br from-sky-500 to-blue-600 text-white border-sky-300/50 shadow-md shadow-sky-500/30';
+                        statusBadgeHtml = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-500/20 text-sky-300 border border-sky-400/40"><i class="fa-solid fa-circle-check text-sky-400"></i> ปกติ (OK)</span>`;
+                    } else if (isNG) {
+                        stateClass = 'state-ng';
+                        numBadgeClass = 'bg-gradient-to-br from-red-600 to-rose-700 text-white border-red-300/50 shadow-md shadow-red-600/30';
+                        statusBadgeHtml = `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-500/20 text-red-300 border border-red-400/40"><i class="fa-solid fa-triangle-exclamation text-red-400"></i> ผิดปกติ (NG)</span>`;
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = `check-card rounded-2xl p-4 sm:p-5 ${stateClass}`;
+
+                    card.innerHTML = `
+                        <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+                            <!-- Item Details -->
+                            <div class="flex-1 space-y-2.5">
+                                <div class="flex flex-wrap items-center gap-2.5">
+                                    <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg border font-mono text-xs font-bold tracking-wider ${numBadgeClass}">
+                                        #${formattedNum}
+                                    </span>
+                                    <h3 class="text-base sm:text-lg font-bold text-white tracking-tight">
+                                        ${item.equipment}
+                                    </h3>
+                                    ${statusBadgeHtml}
+                                </div>
+
+                                <p class="text-sm sm:text-base text-slate-200 leading-relaxed">
+                                    <span class="text-slate-400 text-xs sm:text-sm mr-1">รายการตรวจสอบ:</span>${item.checkItem}
+                                </p>
+
+                                <!-- Method / Criteria Highlight Box -->
+                                <div class="inline-flex items-start gap-2.5 bg-slate-950/75 border border-slate-700/70 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-300">
+                                    <i class="fa-solid fa-crosshairs text-sky-400 mt-1 shrink-0"></i>
+                                    <div>
+                                        <span class="font-semibold text-white">วิธีการตรวจสอบ / เกณฑ์:</span> ${item.method}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tactile OK / NG Buttons -->
+                            <div class="flex items-center gap-2.5 shrink-0 pt-1 lg:pt-0 no-print">
+                                <button type="button" onclick="toggleStatus(${item.id}, 'OK')"
+                                    class="flex-1 sm:flex-initial min-w-[118px] py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 border transition-all active:scale-95 cursor-pointer
+                                    ${isOK 
+                                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 border-sky-300/60 text-white shadow-lg shadow-sky-600/35' 
+                                        : 'bg-slate-900/90 border-slate-700 text-slate-300 hover:border-sky-400/60 hover:text-sky-300 hover:bg-sky-950/40'}">
+                                    <i class="fa-solid fa-check text-base"></i>
+                                    <span>OK</span>
+                                </button>
+
+                                <button type="button" onclick="toggleStatus(${item.id}, 'NG')"
+                                    class="flex-1 sm:flex-initial min-w-[118px] py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 border transition-all active:scale-95 cursor-pointer
+                                    ${isNG 
+                                        ? 'bg-gradient-to-r from-red-600 to-rose-700 border-red-300/60 text-white shadow-lg shadow-red-600/40' 
+                                        : 'bg-slate-900/90 border-slate-700 text-slate-300 hover:border-red-400/60 hover:text-red-300 hover:bg-red-950/40'}">
+                                    <i class="fa-solid fa-xmark text-base"></i>
+                                    <span>NG</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Optional Remark Toggle for OK -->
+                        ${isOK ? `
+                            <div class="mt-3.5 pt-3 border-t border-sky-500/20">
+                                ${!res.showNoteInput && !res.note ? `
+                                    <button type="button" onclick="toggleOkNote(${item.id})" class="no-print text-xs font-medium text-sky-300 hover:text-white inline-flex items-center gap-1.5 transition">
+                                        <i class="fa-solid fa-plus-circle"></i> เพิ่มหมายเหตุ
+                                    </button>
+                                ` : `
+                                    <div>
+                                        <label class="block text-xs font-medium text-sky-300 mb-1">หมายเหตุ (เพิ่มเติม)</label>
+                                        <input type="text" value="${escapeHtml(res.note || '')}" oninput="updateItemField(${item.id}, 'note', this.value)"
+                                            placeholder="ระบุหมายเหตุเพิ่มเติม..."
+                                            class="w-full px-3.5 py-2 rounded-xl bg-slate-950/80 border border-sky-500/35 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                                    </div>
+                                `}
+                            </div>
+                        ` : ''}
+
+                        <!-- Expanded Crimson Input Panel for NG -->
+                        ${isNG ? `
+                            <div class="mt-4 pt-4 border-t border-red-500/30 bg-slate-950/75 rounded-2xl p-4 space-y-3.5">
+                                <div class="flex items-center gap-2 text-red-400 text-xs font-bold uppercase tracking-wider">
+                                    <i class="fa-solid fa-circle-exclamation"></i> บันทึกรายละเอียดความผิดปกติและการแก้ไข
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                    <div>
+                                        <label class="block text-xs font-medium text-red-200 mb-1">
+                                            1) รายละเอียดปัญหา / สิ่งที่พบ <span class="text-red-400">*</span>
+                                        </label>
+                                        <textarea rows="2" oninput="updateItemField(${item.id}, 'issue', this.value)"
+                                            placeholder="ระบุอาการผิดปกติที่ตรวจพบ..."
+                                            class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-red-500/40 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-400">${escapeHtml(res.issue || '')}</textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-sky-200 mb-1">
+                                            2) การแก้ไข / ดำเนินการ <span class="text-red-400">*</span>
+                                        </label>
+                                        <textarea rows="2" oninput="updateItemField(${item.id}, 'action', this.value)"
+                                            placeholder="ระบุการแก้ไขเบื้องต้นหรือผู้รับผิดชอบ..."
+                                            class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">${escapeHtml(res.action || '')}</textarea>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-300 mb-1">
+                                        3) หมายเหตุ
+                                    </label>
+                                    <input type="text" value="${escapeHtml(res.note || '')}" oninput="updateItemField(${item.id}, 'note', this.value)"
+                                        placeholder="ระบุหมายเหตุเพิ่มเติม (ถ้ามี)..."
+                                        class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-slate-500">
+                                </div>
+                            </div>
+                        ` : ''}
+                    `;
+
+                    cardsGrid.appendChild(card);
+                });
+
+                section.appendChild(cardsGrid);
+                container.appendChild(section);
+            });
+
+            if (totalVisibleItems === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+        }
+
+        // ==========================================
+        // 6. REAL-TIME SUMMARY & NG FOLLOW-UP LIST
+        // ==========================================
+        function updateSummary() {
+            const totalItems = 32;
+            let okCount = 0;
+            let ngCount = 0;
+
+            for (let i = 1; i <= totalItems; i++) {
+                const status = appState.results[i]?.status;
+                if (status === 'OK') okCount++;
+                else if (status === 'NG') ngCount++;
+            }
+
+            const checkedCount = okCount + ngCount;
+            const pendingCount = totalItems - checkedCount;
+            const percent = Math.round((checkedCount / totalItems) * 100);
+
+            document.getElementById('progress-text').textContent = `${checkedCount} / ${totalItems} รายการ (${percent}%)`;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('stat-checked').textContent = checkedCount;
+            document.getElementById('stat-ok').textContent = okCount;
+            document.getElementById('stat-ng').textContent = ngCount;
+            document.getElementById('stat-pending').textContent = pendingCount;
+
+            document.getElementById('footer-checked').textContent = checkedCount;
+            document.getElementById('footer-ok').textContent = okCount;
+            document.getElementById('footer-ng').textContent = ngCount;
+
+            updateNgSummaryList();
+        }
+
+        function updateNgSummaryList() {
+            const listContainer = document.getElementById('ng-summary-list');
+            const ngItems = [];
+
+            CHECKLIST_DATA.forEach(cat => {
+                cat.items.forEach(item => {
+                    const res = appState.results[item.id];
+                    if (res && res.status === 'NG') {
+                        ngItems.push({
+                            ...item,
+                            categoryTitle: cat.title,
+                            issue: res.issue || '-',
+                            action: res.action || '-'
+                        });
+                    }
+                });
+            });
+
+            if (ngItems.length === 0) {
+                listContainer.innerHTML = `<p class="text-sm text-slate-400 text-center py-3">ไม่มีรายการผิดปกติ (NG) ที่ต้องดำเนินการแก้ไข</p>`;
+                return;
+            }
+
+            listContainer.innerHTML = `
+                <div class="space-y-3">
+                    ${ngItems.map(item => `
+                        <div class="bg-slate-950/90 border border-red-500/40 rounded-xl p-4 shadow-md">
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                <span class="px-2 py-0.5 rounded bg-red-600 text-white font-mono text-xs font-bold">#${String(item.id).padStart(2, '0')}</span>
+                                <span class="font-bold text-white text-sm">${item.equipment}</span>
+                                <span class="text-xs text-slate-400">(${item.categoryTitle})</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm pt-2 border-t border-slate-800">
+                                <div><span class="font-semibold text-red-400">ปัญหาที่พบ:</span> <span class="text-slate-200">${escapeHtml(item.issue)}</span></div>
+                                <div><span class="font-semibold text-sky-400">การแก้ไข/ดำเนินการ:</span> <span class="text-slate-200">${escapeHtml(item.action)}</span></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // ==========================================
+        // 7. EXPORT CSV (UTF-8 BOM FOR EXCEL)
+        // ==========================================
+        function exportToCSV() {
+            const meta = appState.metadata;
+            const cycleText = meta.cycle === 'อื่น ๆ' ? `อื่น ๆ (${meta.cycleOther || '-'})` : meta.cycle;
+
+            const rows = [
+                ["แบบฟอร์มตรวจสอบและบำรุงรักษา Station iSmart Motor"],
+                ["วันที่ตรวจสอบ", meta.date || "-", "ผู้ตรวจสอบ", meta.inspector || "-", "รอบการตรวจ", cycleText],
+                [],
+                ["ลำดับ", "หมวดหมู่", "อุปกรณ์/ส่วนประกอบ", "รายการตรวจสอบ", "วิธีการตรวจสอบ/เกณฑ์", "ผลการตรวจ (OK/NG)", "รายละเอียดปัญหา/สิ่งที่พบ", "การแก้ไข/ดำเนินการ", "หมายเหตุ"]
+            ];
+
+            CHECKLIST_DATA.forEach(cat => {
+                cat.items.forEach(item => {
+                    const res = appState.results[item.id] || {};
+                    const statusLabel = res.status === 'OK' ? 'OK' : (res.status === 'NG' ? 'NG' : 'รอตรวจ');
+                    rows.push([
+                        item.id,
+                        cat.title,
+                        item.equipment,
+                        item.checkItem,
+                        item.method,
+                        statusLabel,
+                        res.issue || "",
+                        res.action || "",
+                        res.note || ""
+                    ]);
+                });
+            });
+
+            const totalChecked = Object.values(appState.results).filter(r => r.status).length;
+            const totalOk = Object.values(appState.results).filter(r => r.status === 'OK').length;
+            const totalNg = Object.values(appState.results).filter(r => r.status === 'NG').length;
+
+            rows.push([]);
+            rows.push(["สรุปผลการตรวจสอบ", `ตรวจแล้ว ${totalChecked}/32 รายการ`, `ปกติ (OK): ${totalOk}`, `ไม่ปกติ (NG): ${totalNg}`]);
+            rows.push(["บันทึกเพิ่มเติมภาพรวม", meta.generalNote || "-"]);
+            rows.push(["ลงชื่อผู้ตรวจสอบ", meta.signInspector || "-", "ลงชื่อผู้รับทราบ", meta.signApprover || "-"]);
+
+            const csvContent = rows.map(row => 
+                row.map(cell => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(",")
+            ).join("\r\n");
+
+            const bom = "\uFEFF";
+            const blob = new Blob([bom + csvContent], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            const fileDate = meta.date || new Date().toISOString().split('T')[0];
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Checksheet_iSmart_Motor_${fileDate}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast("ส่งออกไฟล์ CSV สำหรับ Excel เรียบร้อยแล้ว", "blue");
+        }
+
+        // ==========================================
+        // 8. RESET CONFIRMATION & TOASTS
+        // ==========================================
+        function confirmResetForm() {
+            const modal = document.getElementById('confirm-modal');
+            document.getElementById('modal-title').textContent = 'รีเซ็ตข้อมูลแบบฟอร์มทั้งหมด';
+            document.getElementById('modal-message').textContent = 'ผลการติ๊ก OK / NG และข้อมูลที่กรอกทั้งหมดจะถูกล้างออก คุณต้องการยืนยันหรือไม่?';
+            modal.classList.remove('hidden');
+
+            document.getElementById('modal-cancel').onclick = () => modal.classList.add('hidden');
+            document.getElementById('modal-confirm').onclick = () => {
+                appState.results = {};
+                appState.metadata = {
+                    date: new Date().toISOString().split('T')[0],
+                    inspector: '',
+                    cycle: 'ประจำวัน',
+                    cycleOther: '',
+                    generalNote: '',
+                    signInspector: '',
+                    signApprover: ''
+                };
+                localStorage.removeItem(STORAGE_KEY);
+                syncMetadataInputs();
+                resetFilters();
+                updateSummary();
+                modal.classList.add('hidden');
+                showToast('รีเซ็ตข้อมูลแบบฟอร์มเรียบร้อยแล้ว', 'red');
+            };
+        }
+
+        function showToast(message, theme = 'blue') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const styles = theme === 'red'
+                ? 'bg-gradient-to-r from-red-600 to-rose-700 border-red-400/40 text-white shadow-red-600/30'
+                : 'bg-gradient-to-r from-blue-600 to-sky-600 border-sky-400/40 text-white shadow-blue-600/30';
+
+            toast.className = `${styles} border px-4 py-3 rounded-xl shadow-xl text-xs sm:text-sm font-medium flex items-center gap-2.5 transform transition-all duration-300 translate-y-2 opacity-0`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function formatThaiDate(isoDate) {
+            if (!isoDate) return '-';
+            const [y, m, d] = isoDate.split('-');
+            const thaiMonths = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+            const monthName = thaiMonths[parseInt(m, 10) - 1] || m;
+            const buddhistYear = parseInt(y, 10) + 543;
+            return `${parseInt(d, 10)} ${monthName} ${buddhistYear}`;
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
