@@ -121,16 +121,16 @@
       border-radius: 4px;
       padding: 14px 16px;
       margin-bottom: 16px;
-      align-items: end;
+      align-items: center;
     }
     @media (max-width: 1080px) { .control-strip { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 640px) { .control-strip { grid-template-columns: 1fr; } }
 
-    .field label {
+    .field > label {
       display: block;
       font-size: 0.74rem;
       color: var(--muted);
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       font-weight: 500;
     }
     input[type="text"], input[type="date"], textarea {
@@ -146,26 +146,45 @@
     }
     textarea { height: auto; resize: vertical; }
 
-    .freq-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .freq-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
     .freq-pill {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      justify-content: center;
+      gap: 6px;
       font-size: 0.78rem;
+      line-height: 1;
       background: var(--bg-row);
       border: 1px solid var(--border);
-      padding: 0 10px;
-      height: 36px;
+      padding: 0 12px;
+      height: 34px;
       border-radius: 3px;
       cursor: pointer;
       white-space: nowrap;
+      user-select: none;
+    }
+    .freq-pill input[type="radio"] {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      accent-color: #3b82f6;
+      cursor: pointer;
     }
     .freq-pill:has(input:checked) {
       border-color: #3b82f6;
-      background: rgba(37, 99, 235, 0.18);
+      background: rgba(37, 99, 235, 0.22);
       color: #fff;
     }
-    #freqOther { width: 145px; display: none; }
+    #freqOther {
+      width: 150px;
+      height: 34px;
+      display: none;
+    }
     #freqOther.show { display: inline-block; }
 
     .mini-kpi-group {
