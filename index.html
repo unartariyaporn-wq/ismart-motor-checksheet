@@ -29,7 +29,7 @@
       min-height: 100vh;
       padding: 20px;
     }
-    .container { max-width: 1240px; margin: 0 auto; }
+    .container { max-width: 1120px; margin: 0 auto; }
 
     /* Top Banner */
     .top-banner {
@@ -114,7 +114,7 @@
     /* Meta + Live KPI Strip */
     .control-strip {
       display: grid;
-      grid-template-columns: 180px 230px 1fr 270px;
+      grid-template-columns: 170px 210px 1fr 250px;
       gap: 12px;
       background: var(--bg-panel);
       border: 1px solid var(--border);
@@ -123,7 +123,7 @@
       margin-bottom: 16px;
       align-items: center;
     }
-    @media (max-width: 1080px) { .control-strip { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 1024px) { .control-strip { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 640px) { .control-strip { grid-template-columns: 1fr; } }
 
     .field > label {
@@ -146,38 +146,38 @@
     }
     textarea { height: auto; resize: vertical; }
 
-  .freq-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-.freq-pill {
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  line-height: 1;
-  background: var(--bg-row);
-  border: 1px solid var(--border);
-  padding: 0 12px;
-  height: 36px;
-  border-radius: 3px;
-  cursor: pointer;
-  white-space: nowrap;
-  user-select: none;
-}
-.freq-pill input[type="radio"] {
-  display: block;
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-  margin: 0;
-  accent-color: #3b82f6;
-  cursor: pointer;
-}
+    .freq-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .freq-pill {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      line-height: 1;
+      background: var(--bg-row);
+      border: 1px solid var(--border);
+      padding: 0 12px;
+      height: 36px;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .freq-pill input[type="radio"] {
+      display: block;
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      accent-color: #3b82f6;
+      cursor: pointer;
+    }
     .freq-pill:has(input:checked) {
       border-color: #3b82f6;
       background: rgba(37, 99, 235, 0.22);
@@ -185,7 +185,7 @@
     }
     #freqOther {
       width: 150px;
-      height: 34px;
+      height: 36px;
       display: none;
     }
     #freqOther.show { display: inline-block; }
@@ -207,17 +207,13 @@
     .mini-kpi.ok .v { color: #34d399; }
     .mini-kpi.ng .v { color: #f87171; }
 
-    /* Balanced 2-Column Masonry Layout */
-    .masonry-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      align-items: start;
+    /* Single-Column Sequential Stack (1 -> 7) */
+    .sections-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       margin-bottom: 16px;
     }
-    @media (max-width: 860px) { .masonry-cols { grid-template-columns: 1fr; } }
-    .col-stack { display: flex; flex-direction: column; gap: 16px; }
-
     .sec-card {
       background: var(--bg-panel);
       border: 1px solid var(--border);
@@ -227,53 +223,53 @@
     }
     .sec-head {
       background: linear-gradient(90deg, rgba(220,38,38,0.18) 0%, #141c2b 55%, rgba(37,99,235,0.16) 100%);
-      padding: 10px 14px;
+      padding: 11px 16px;
       border-bottom: 1px solid var(--border-bright);
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
     }
-    .sec-title-wrap { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; }
+    .sec-title-wrap { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.94rem; }
     .sec-num {
       background: var(--red);
       color: #fff;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      padding: 1px 7px;
+      padding: 2px 8px;
       border-radius: 2px;
     }
     .sec-count {
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       color: var(--muted);
       background: #0b1019;
       border: 1px solid var(--border);
-      padding: 2px 8px;
+      padding: 2px 9px;
       border-radius: 2px;
     }
     .item-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      padding: 9px 14px;
+      gap: 16px;
+      padding: 10px 16px;
       border-bottom: 1px solid rgba(38, 50, 71, 0.65);
-      font-size: 0.84rem;
+      font-size: 0.88rem;
       transition: background 0.12s;
     }
     .item-row:hover { background: var(--bg-row-hover); }
     .item-row:last-child { border-bottom: none; }
 
-    .choice-group { display: flex; gap: 6px; flex-shrink: 0; }
+    .choice-group { display: flex; gap: 8px; flex-shrink: 0; }
     .choice-btn {
-      min-width: 64px;
+      min-width: 74px;
       border: 1px solid var(--border-bright);
       background: #090d16;
       color: var(--muted);
       font-family: inherit;
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      padding: 5px 10px;
+      padding: 6px 12px;
       border-radius: 3px;
       cursor: pointer;
       transition: 0.15s;
@@ -378,11 +374,8 @@
       </div>
     </div>
 
-    <!-- Balanced 2-Column Checksheet -->
-    <div class="masonry-cols">
-      <div class="col-stack" id="leftCol"></div>
-      <div class="col-stack" id="rightCol"></div>
-    </div>
+    <!-- Sequential Checksheet 1 -> 7 -->
+    <div class="sections-stack" id="sectionsStack"></div>
 
     <!-- Remark & Submit -->
     <div class="bottom-panel">
@@ -426,7 +419,7 @@
 const MOTOR_GAS_URL = 'https://script.google.com/macros/s/AKfycbw4ZPvgi2OU9cMLihKejPM-LzHXH2UGBrAzmFO0IH8XapMS5e3zNQGgYiwcuRj4_cIKzg/exec';
 const LOCAL_KEY = 'ismart_motor_checksheet_v1';
 
-const LEFT_SECTIONS = [
+const ALL_SECTIONS = [
   {
     idx: 0, num: '1',
     title: 'สภาพทั่วไปและอุปกรณ์ประจำสถานี',
@@ -458,10 +451,7 @@ const LEFT_SECTIONS = [
       'การเชื่อมต่อระบบ (LAN / Wi-Fi)',
       'สายสื่อสารและพอร์ตเชื่อมต่อ'
     ]
-  }
-];
-
-const RIGHT_SECTIONS = [
+  },
   {
     idx: 3, num: '4',
     title: 'การรับข้อมูล และการประมวลผล',
@@ -504,7 +494,6 @@ const RIGHT_SECTIONS = [
   }
 ];
 
-const ALL_SECTIONS = [...LEFT_SECTIONS, ...RIGHT_SECTIONS];
 const ALL_ITEMS = ALL_SECTIONS.flatMap(s =>
   s.items.map((name, iIdx) => ({ key: `${s.idx}_${iIdx}`, name }))
 );
@@ -539,8 +528,7 @@ function renderSectionCard(sec) {
 }
 
 function renderSections() {
-  document.getElementById('leftCol').innerHTML = LEFT_SECTIONS.map(renderSectionCard).join('');
-  document.getElementById('rightCol').innerHTML = RIGHT_SECTIONS.map(renderSectionCard).join('');
+  document.getElementById('sectionsStack').innerHTML = ALL_SECTIONS.map(renderSectionCard).join('');
   updateSummary();
 }
 
