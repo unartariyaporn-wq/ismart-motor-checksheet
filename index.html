@@ -7,230 +7,378 @@
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #090d14;
-      --bg-card: #111824;
-      --bg-row: #172030;
-      --border: #2a374d;
-      --text: #e2e8f0;
+      --bg-base: #07090e;
+      --bg-panel: #0f141e;
+      --bg-header: linear-gradient(90deg, #1a0c12 0%, #111827 52%, #0c192e 100%);
+      --bg-row: #141b29;
+      --bg-row-hover: #1a2334;
+      --border: #263247;
+      --border-bright: #3b4c6b;
+      --text: #f1f5f9;
       --muted: #94a3b8;
       --red: #dc2626;
-      --red-soft: rgba(220, 38, 38, 0.16);
+      --red-dark: #991b1b;
       --blue: #2563eb;
       --green: #10b981;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Prompt', sans-serif;
-      background: linear-gradient(160deg, #1a0f16 0%, #090d14 42%, #0c1729 100%);
+      background: radial-gradient(circle at top left, #1c0d14 0%, var(--bg-base) 40%, #091324 100%);
       color: var(--text);
       min-height: 100vh;
-      padding: 18px;
+      padding: 20px;
     }
-    .container { max-width: 1060px; margin: 0 auto; }
-    .top-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-left: 5px solid var(--red);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 16px;
+    .container { max-width: 1240px; margin: 0 auto; }
+
+    /* Top Banner */
+    .top-banner {
+      background: var(--bg-header);
+      border: 1px solid var(--border-bright);
+      border-top: 3px solid var(--red);
+      border-radius: 4px;
+      padding: 18px 22px;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.55);
     }
-    .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
-    .badge {
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .smc-logo-box {
+      background: #ffffff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+    .smc-logo-box img {
+      height: 40px;
+      width: auto;
+      display: block;
+    }
+    .brand-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+    .tag-eeci {
+      background: rgba(37, 99, 235, 0.22);
+      border: 1px solid #3b82f6;
+      color: #93c5fd;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 2px;
+    }
+    .tag-sync {
+      background: #162033;
+      border: 1px solid var(--border-bright);
+      color: #cbd5e1;
       font-size: 0.72rem;
       padding: 2px 9px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      background: var(--bg-row);
-      color: var(--text);
+      border-radius: 2px;
     }
-    .badge-red { border-color: var(--red); background: var(--red-soft); color: #fca5a5; font-weight: 600; }
-    h1 { font-size: 1.25rem; font-weight: 700; }
+    h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: 0.2px; }
     .sub { font-size: 0.84rem; color: var(--muted); margin-top: 2px; }
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 18px;
-      margin-bottom: 16px;
-    }
-    label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
-    input[type="text"], input[type="date"], select, textarea {
-      width: 100%;
-      background: #0b1018;
-      border: 1px solid var(--border);
+
+    .action-bar { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      background: #161f30;
+      border: 1px solid var(--border-bright);
       color: var(--text);
       font-family: inherit;
-      font-size: 0.85rem;
-      padding: 7px 10px;
-      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: 0.15s;
     }
-    .freq-group { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px; }
+    .btn:hover { background: #1f2b42; border-color: #64748b; }
+    .btn-primary {
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+      border-color: #ef4444;
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 0 16px rgba(220, 38, 38, 0.35);
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+
+    /* Meta + Live KPI Strip */
+    .control-strip {
+      display: grid;
+      grid-template-columns: 180px 230px 1fr 270px;
+      gap: 12px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      align-items: end;
+    }
+    @media (max-width: 1080px) { .control-strip { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .control-strip { grid-template-columns: 1fr; } }
+
+    .field label {
+      display: block;
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input[type="text"], input[type="date"], textarea {
+      width: 100%;
+      background: #080c14;
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.84rem;
+      padding: 7px 10px;
+      border-radius: 3px;
+      height: 36px;
+    }
+    textarea { height: auto; resize: vertical; }
+
+    .freq-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
     .freq-pill {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       background: var(--bg-row);
       border: 1px solid var(--border);
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 0 10px;
+      height: 36px;
+      border-radius: 3px;
       cursor: pointer;
+      white-space: nowrap;
     }
-    .sections-grid {
+    .freq-pill:has(input:checked) {
+      border-color: #3b82f6;
+      background: rgba(37, 99, 235, 0.18);
+      color: #fff;
+    }
+    #freqOther { width: 145px; display: none; }
+    #freqOther.show { display: inline-block; }
+
+    .mini-kpi-group {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(470px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .mini-kpi {
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 5px 8px;
+      text-align: center;
+    }
+    .mini-kpi .v { font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+    .mini-kpi .l { font-size: 0.68rem; color: var(--muted); }
+    .mini-kpi.ok .v { color: #34d399; }
+    .mini-kpi.ng .v { color: #f87171; }
+
+    /* Balanced 2-Column Masonry Layout */
+    .masonry-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
       margin-bottom: 16px;
     }
-    @media (max-width: 600px) { .sections-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 860px) { .masonry-cols { grid-template-columns: 1fr; } }
+    .col-stack { display: flex; flex-direction: column; gap: 16px; }
+
     .sec-card {
-      background: var(--bg-card);
+      background: var(--bg-panel);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 4px;
       overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
     }
     .sec-head {
-      background: var(--bg-row);
+      background: linear-gradient(90deg, rgba(220,38,38,0.18) 0%, #141c2b 55%, rgba(37,99,235,0.16) 100%);
       padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      font-weight: 600;
-      font-size: 0.92rem;
+      border-bottom: 1px solid var(--border-bright);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
+    }
+    .sec-title-wrap { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; }
+    .sec-num {
+      background: var(--red);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 2px;
+    }
+    .sec-count {
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: #0b1019;
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 2px;
     }
     .item-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      padding: 8px 14px;
-      border-bottom: 1px solid rgba(42, 55, 77, 0.55);
+      gap: 12px;
+      padding: 9px 14px;
+      border-bottom: 1px solid rgba(38, 50, 71, 0.65);
       font-size: 0.84rem;
+      transition: background 0.12s;
     }
+    .item-row:hover { background: var(--bg-row-hover); }
     .item-row:last-child { border-bottom: none; }
+
     .choice-group { display: flex; gap: 6px; flex-shrink: 0; }
     .choice-btn {
-      border: 1px solid var(--border);
-      background: #0b1018;
+      min-width: 64px;
+      border: 1px solid var(--border-bright);
+      background: #090d16;
       color: var(--muted);
       font-family: inherit;
       font-size: 0.76rem;
       font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 5px;
+      padding: 5px 10px;
+      border-radius: 3px;
       cursor: pointer;
+      transition: 0.15s;
     }
-    .choice-btn.ok.active { background: rgba(16, 185, 129, 0.2); border-color: var(--green); color: #6ee7b7; }
-    .choice-btn.ng.active { background: rgba(220, 38, 38, 0.25); border-color: var(--red); color: #fca5a5; }
-    .summary-card {
-      background: var(--bg-card);
+    .choice-btn:hover { border-color: #94a3b8; color: #fff; }
+    .choice-btn.ok.active {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: var(--green);
+      color: #6ee7b7;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+    }
+    .choice-btn.ng.active {
+      background: rgba(220, 38, 38, 0.28);
+      border-color: var(--red);
+      color: #fca5a5;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.25);
+    }
+
+    /* Bottom Remark & History */
+    .bottom-panel {
+      background: var(--bg-panel);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 18px;
+      border-radius: 4px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
     }
-    .stats-bar { display: flex; gap: 14px; flex-wrap: wrap; margin: 12px 0; }
-    .stat-box {
-      background: var(--bg-row);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 0.86rem;
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
     }
-    .stat-box strong.ok { color: #34d399; }
-    .stat-box strong.ng { color: #f87171; }
-    .btn {
-      background: var(--bg-row);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: inherit;
-      font-size: 0.84rem;
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
+    .panel-header h2 { font-size: 0.96rem; font-weight: 600; }
+    .remark-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #dc2626, #991b1b);
-      border-color: #ef4444;
-      color: #fff;
-      font-weight: 600;
-    }
-    .table-wrap { overflow-x: auto; margin-top: 10px; }
+    .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-    th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; }
-    th { background: var(--bg-row); }
+    th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+    th { background: #141c2b; color: #cbd5e1; font-weight: 600; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="top-card">
-      <div>
-        <div class="badges">
-          <span class="badge badge-red">SMC • EECI ARIPOLIS</span>
-          <span class="badge">Station iSmart Motor TESTBED</span>
-          <span class="badge" id="syncBadge">พร้อมบันทึก</span>
+    <!-- Top Header -->
+    <div class="top-banner">
+      <div class="brand-lockup">
+        <div class="smc-logo-box" id="smcLogoBox">
+          <img src="cropped-SMC-logo.png" alt="SMC a member of EECi ARIPOLIS" onerror="document.getElementById('smcLogoBox').style.display='none'">
         </div>
-        <h1>แบบตรวจสอบและบำรุงรักษาอุปกรณ์ประจำสถานี</h1>
-        <p class="sub">ตรวจสอบอุปกรณ์ • ตรวจระบบวัด • ตรวจการทำงานของโปรแกรมและ Dashboard</p>
+        <div>
+          <div class="brand-row">
+            <span class="tag-eeci">Station iSmart Motor TESTBED</span>
+            <span class="tag-sync" id="syncBadge">Google Sheets: พร้อมบันทึก</span>
+          </div>
+          <h1>แบบตรวจสอบและบำรุงรักษาอุปกรณ์ประจำสถานี</h1>
+          <p class="sub">ตรวจสอบอุปกรณ์ • ตรวจระบบวัด • ตรวจการทำงานของโปรแกรมและ Dashboard</p>
+        </div>
       </div>
-      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <div class="action-bar">
         <button class="btn" onclick="markAllOK()">ติ๊ก "ปกติ" ทั้งหมด</button>
         <button class="btn" onclick="clearForm()">ล้างค่า</button>
         <button class="btn btn-primary" onclick="submitChecksheet()">บันทึกผลลง Google Sheets</button>
       </div>
     </div>
 
-    <div class="meta-grid">
-      <div>
+    <!-- Metadata & Live Counter Strip -->
+    <div class="control-strip">
+      <div class="field">
         <label>วันที่ตรวจสอบ</label>
         <input type="date" id="checkDate">
       </div>
-      <div>
+      <div class="field">
         <label>ผู้ตรวจสอบ</label>
         <input type="text" id="inspector" placeholder="ระบุชื่อผู้ตรวจสอบ">
       </div>
-      <div style="grid-column: span 2;">
+      <div class="field">
         <label>รอบการตรวจ</label>
-        <div class="freq-group">
-          <label class="freq-pill"><input type="radio" name="freq" value="ประจำวัน" checked> ประจำวัน</label>
-          <label class="freq-pill"><input type="radio" name="freq" value="ประจำสัปดาห์"> ประจำสัปดาห์</label>
-          <label class="freq-pill"><input type="radio" name="freq" value="ประจำเดือน"> ประจำเดือน</label>
-          <label class="freq-pill"><input type="radio" name="freq" value="อื่น ๆ"> อื่น ๆ</label>
-          <input type="text" id="freqOther" placeholder="ระบุเพิ่มเติม (ถ้าเลือกอื่น ๆ)" style="max-width:220px;">
+        <div class="freq-row">
+          <label class="freq-pill"><input type="radio" name="freq" value="ประจำวัน" checked onchange="toggleOtherInput()"> ประจำวัน</label>
+          <label class="freq-pill"><input type="radio" name="freq" value="ประจำสัปดาห์" onchange="toggleOtherInput()"> ประจำสัปดาห์</label>
+          <label class="freq-pill"><input type="radio" name="freq" value="ประจำเดือน" onchange="toggleOtherInput()"> ประจำเดือน</label>
+          <label class="freq-pill"><input type="radio" name="freq" value="อื่น ๆ" onchange="toggleOtherInput()"> อื่น ๆ</label>
+          <input type="text" id="freqOther" placeholder="ระบุรอบการตรวจ...">
+        </div>
+      </div>
+      <div class="field">
+        <label>สรุปผลการตรวจสอบ (รายการ)</label>
+        <div class="mini-kpi-group">
+          <div class="mini-kpi"><div class="v" id="sumTotal">30</div><div class="l">ทั้งหมด</div></div>
+          <div class="mini-kpi ok"><div class="v" id="sumOk">0</div><div class="l">ปกติ</div></div>
+          <div class="mini-kpi ng"><div class="v" id="sumNg">0</div><div class="l">ผิดปกติ</div></div>
         </div>
       </div>
     </div>
 
-    <div class="sections-grid" id="sectionsContainer"></div>
+    <!-- Balanced 2-Column Checksheet -->
+    <div class="masonry-cols">
+      <div class="col-stack" id="leftCol"></div>
+      <div class="col-stack" id="rightCol"></div>
+    </div>
 
-    <div class="summary-card">
-      <h2 style="font-size:1rem; margin-bottom:8px;">บันทึกผลและการแก้ไข (ถ้ามี)</h2>
-      <textarea id="remark" rows="3" placeholder="บันทึกรายการที่พบความผิดปกติ สาเหตุ และแนวทางแก้ไข..."></textarea>
-
-      <div class="stats-bar">
-        <div class="stat-box">จำนวนรายการตรวจสอบ: <strong id="sumTotal">0</strong> รายการ</div>
-        <div class="stat-box">ปกติ: <strong class="ok" id="sumOk">0</strong> รายการ</div>
-        <div class="stat-box">ผิดปกติ: <strong class="ng" id="sumNg">0</strong> รายการ</div>
+    <!-- Remark & Submit -->
+    <div class="bottom-panel">
+      <div class="panel-header">
+        <h2>บันทึกผลและการแก้ไข (ถ้ามี)</h2>
+        <span style="font-size:0.76rem; color:var(--muted);">กรอกรายละเอียดเมื่อพบรายการผิดปกติหรือมีการปรับแก้หน้างาน</span>
       </div>
-
-      <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <textarea id="remark" rows="2" placeholder="บันทึกรายการที่พบความผิดปกติ สาเหตุ และแนวทางแก้ไข..."></textarea>
+      <div class="remark-footer">
+        <span style="font-size:0.78rem; color:var(--muted);">* ข้อมูลจะถูกบันทึกเข้าแท็บ <strong>motor_checksheet_logs</strong> บน Google Sheets อัตโนมัติ</span>
         <button class="btn btn-primary" onclick="submitChecksheet()">บันทึกผลลง Google Sheets</button>
       </div>
     </div>
 
-    <div class="summary-card">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2 style="font-size:1rem;">ประวัติการบันทึกผลการตรวจสอบ (Equipment Inspection Record)</h2>
+    <!-- History Log -->
+    <div class="bottom-panel">
+      <div class="panel-header">
+        <h2>ประวัติการบันทึกผลการตรวจสอบ (Equipment Inspection Record)</h2>
         <button class="btn" onclick="loadHistory()">รีเฟรชประวัติ</button>
       </div>
       <div class="table-wrap">
@@ -256,10 +404,10 @@
 const MOTOR_GAS_URL = 'https://script.google.com/macros/s/AKfycbw4ZPvgi2OU9cMLihKejPM-LzHXH2UGBrAzmFO0IH8XapMS5e3zNQGgYiwcuRj4_cIKzg/exec';
 const LOCAL_KEY = 'ismart_motor_checksheet_v1';
 
-const SECTIONS = [
+const LEFT_SECTIONS = [
   {
-    id: 'sec1',
-    title: '1/ สภาพทั่วไปและอุปกรณ์ประจำสถานี',
+    idx: 0, num: '1',
+    title: 'สภาพทั่วไปและอุปกรณ์ประจำสถานี',
     items: [
       'พื้นที่และความสะอาด',
       'กล่อง iSmart Motor',
@@ -270,8 +418,8 @@ const SECTIONS = [
     ]
   },
   {
-    id: 'sec2',
-    title: '2/ เซนเซอร์และอุปกรณ์ตรวจวัด',
+    idx: 1, num: '2',
+    title: 'เซนเซอร์และอุปกรณ์ตรวจวัด',
     items: [
       'เซนเซอร์วัด (เช่น การสั่นสะเทือน)',
       'ตำแหน่งติดตั้งและการยึดแน่น',
@@ -281,17 +429,20 @@ const SECTIONS = [
     ]
   },
   {
-    id: 'sec3',
-    title: '3/ ระบบไฟฟ้าและการเชื่อมต่อ',
+    idx: 2, num: '3',
+    title: 'ระบบไฟฟ้าและการเชื่อมต่อ',
     items: [
       'แหล่งจ่ายไฟ (Power Supply)',
       'การเชื่อมต่อระบบ (LAN / Wi-Fi)',
       'สายสื่อสารและพอร์ตเชื่อมต่อ'
     ]
-  },
+  }
+];
+
+const RIGHT_SECTIONS = [
   {
-    id: 'sec4',
-    title: '4/ การรับข้อมูล และการประมวลผล',
+    idx: 3, num: '4',
+    title: 'การรับข้อมูล และการประมวลผล',
     items: [
       'หน้า Dashboard (Grafana)',
       'รับข้อมูลจากเซนเซอร์',
@@ -303,8 +454,8 @@ const SECTIONS = [
     ]
   },
   {
-    id: 'sec5',
-    title: '5/ Dashboard และการแสดงผล',
+    idx: 4, num: '5',
+    title: 'Dashboard และการแสดงผล',
     items: [
       'เข้าใช้งาน Dashboard ได้',
       'แสดงผลการวัด (เช่น RMS, FFT)',
@@ -314,8 +465,8 @@ const SECTIONS = [
     ]
   },
   {
-    id: 'sec6',
-    title: '6/ การจัดเก็บอุปกรณ์',
+    idx: 5, num: '6',
+    title: 'การจัดเก็บอุปกรณ์',
     items: [
       'กล่องจัดเก็บเรียบร้อย',
       'สายสัญญาณจัดเก็บเป็นระเบียบ',
@@ -323,30 +474,33 @@ const SECTIONS = [
     ]
   },
   {
-    id: 'sec7',
-    title: '7/ การทดสอบหลังตรวจสอบและบำรุงรักษา',
+    idx: 6, num: '7',
+    title: 'การทดสอบหลังตรวจสอบและบำรุงรักษา',
     items: [
       'ทดสอบการทำงานและแสดงผล'
     ]
   }
 ];
 
-const ALL_ITEMS = SECTIONS.flatMap((s, sIdx) =>
-  s.items.map((name, iIdx) => ({ key: `${sIdx}_${iIdx}`, name }))
+const ALL_SECTIONS = [...LEFT_SECTIONS, ...RIGHT_SECTIONS];
+const ALL_ITEMS = ALL_SECTIONS.flatMap(s =>
+  s.items.map((name, iIdx) => ({ key: `${s.idx}_${iIdx}`, name }))
 );
 
 let answers = {};
 
-function renderSections() {
-  const container = document.getElementById('sectionsContainer');
-  container.innerHTML = SECTIONS.map((sec, sIdx) => `
+function renderSectionCard(sec) {
+  return `
     <div class="sec-card">
       <div class="sec-head">
-        <span>${sec.title}</span>
-        <span style="font-size:0.74rem; color:var(--muted);">${sec.items.length} รายการ</span>
+        <div class="sec-title-wrap">
+          <span class="sec-num">${sec.num}</span>
+          <span>${sec.title}</span>
+        </div>
+        <span class="sec-count">${sec.items.length} รายการ</span>
       </div>
       ${sec.items.map((name, iIdx) => {
-        const key = `${sIdx}_${iIdx}`;
+        const key = `${sec.idx}_${iIdx}`;
         const val = answers[key] || '';
         return `
           <div class="item-row">
@@ -359,8 +513,20 @@ function renderSections() {
         `;
       }).join('')}
     </div>
-  `).join('');
+  `;
+}
+
+function renderSections() {
+  document.getElementById('leftCol').innerHTML = LEFT_SECTIONS.map(renderSectionCard).join('');
+  document.getElementById('rightCol').innerHTML = RIGHT_SECTIONS.map(renderSectionCard).join('');
   updateSummary();
+}
+
+function toggleOtherInput() {
+  const isOther = document.querySelector('input[name="freq"]:checked')?.value === 'อื่น ๆ';
+  const input = document.getElementById('freqOther');
+  input.classList.toggle('show', isOther);
+  if (isOther) input.focus();
 }
 
 function setChoice(key, status) {
@@ -412,13 +578,8 @@ async function submitChecksheet() {
   localStorage.setItem(LOCAL_KEY, JSON.stringify(localHistory));
   renderHistory(localHistory);
 
-  if (!MOTOR_GAS_URL.startsWith('https://script.google.com/')) {
-    alert('บันทึกในเครื่องแล้ว (ยังไม่ได้ใส่ MOTOR_GAS_URL)');
-    return;
-  }
-
   const badge = document.getElementById('syncBadge');
-  badge.textContent = 'กำลังบันทึก...';
+  badge.textContent = 'Google Sheets: กำลังบันทึก...';
   try {
     const res = await fetch(MOTOR_GAS_URL, {
       method: 'POST',
@@ -427,7 +588,7 @@ async function submitChecksheet() {
     });
     const out = await res.json().catch(() => ({ ok: res.ok }));
     if (!res.ok || out.ok === false) throw new Error(out.error || 'บันทึกไม่สำเร็จ');
-    badge.textContent = 'บันทึก Google Sheets แล้ว';
+    badge.textContent = 'Google Sheets: บันทึกแล้ว';
     await loadHistory();
     alert('บันทึกผลการตรวจสอบเรียบร้อยแล้วค่ะ');
   } catch (err) {
@@ -455,7 +616,6 @@ function renderHistory(list) {
 async function loadHistory() {
   const localHistory = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
   renderHistory(localHistory);
-  if (!MOTOR_GAS_URL.startsWith('https://script.google.com/')) return;
   try {
     const res = await fetch(`${MOTOR_GAS_URL}?t=${Date.now()}`, { cache: 'no-store' });
     const data = await res.json();
